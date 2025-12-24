@@ -1,5 +1,5 @@
 # xxl-job-csharp-client
-C#客户端支持.NetFrameWork4.5
+C#客户端支持.NetFramework4.5
 
 
 
