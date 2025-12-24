@@ -29,7 +29,7 @@ namespace ConsoleApp1
             xxlJobExecutor.setAppName("windows-job");
             xxlJobExecutor.setAdminAddresses("http://192.168.18.29:8089/xxl-job-admin");
             xxlJobExecutor.setPort(7072);
-            xxlJobExecutor.setAccessToken("");
+            xxlJobExecutor.setAccessToken("Oceania881477");
             xxlJobExecutor.start();
 
 

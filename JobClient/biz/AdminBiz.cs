@@ -61,7 +61,7 @@ namespace JobClient.biz
         {
             var str = createPackage(methodName, parameterTypes, parameters);
 
-            var result = requestTo(address + MAPPING, str);
+            var result = requestTo(address + MAPPING, str, this.accessToken);
 
             var response = Newtonsoft.Json.JsonConvert.DeserializeObject<RpcResponse>(result);
 
@@ -84,7 +84,7 @@ namespace JobClient.biz
 
         private ReturnT<String> PostPackage(string methodName, string requestStr)
         {
-            var result = requestTo(address + MAPPING + "/" + methodName, requestStr);
+            var result = requestTo(address + MAPPING + "/" + methodName, requestStr, this.accessToken);
 
             var response = Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT<String>>(result);
 
@@ -128,12 +128,14 @@ namespace JobClient.biz
             return str;
         }
 
-        private static string requestTo(string url, string requestStr)
+        private static string requestTo(string url, string requestStr, string strToken)
         {
             HttpWebRequest httpWebRequest = WebRequest.Create(url) as HttpWebRequest;
 
             httpWebRequest.Timeout = 30 * 1000;// timeout;
             httpWebRequest.Method = "POST";
+
+            httpWebRequest.Headers.Add("XXL-JOB-ACCESS-TOKEN", strToken);
             httpWebRequest.ContentType = "application/json";
 
             Stream myResponseStream = null;
