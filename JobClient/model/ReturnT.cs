@@ -35,7 +35,5 @@ namespace JobClient.model
             return "ReturnT [code=" + code + ", msg=" + msg + ", content=" + content + "]";
         }
 
-
-
     }
 }

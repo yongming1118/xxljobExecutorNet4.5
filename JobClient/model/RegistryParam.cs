@@ -9,14 +9,14 @@ namespace JobClient
 
         }
 
-        public RegistryParam(string registGroup, string appName, string executorAddress)
+        public RegistryParam(string registryGroup, string appName, string executorAddress)
         {
-            this.registGroup = registGroup;
+            this.registryGroup = registryGroup;
             this.registryKey = appName;
             this.registryValue = executorAddress;
         }
 
-        public string registGroup { get; set; }
+        public string registryGroup { get; set; }
         public string registryKey { get; set; }
         public string registryValue { get; set; }
 
@@ -24,7 +24,7 @@ namespace JobClient
         public override string ToString()
         {
             return "RegistryParam{" +
-              "registGroup='" + registGroup + '\'' +
+              "registryGroup='" + registryGroup + '\'' +
               ", registryKey='" + registryKey + '\'' +
               ", registryValue='" + registryValue + '\'' +
               '}';

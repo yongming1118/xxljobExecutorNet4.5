@@ -13,7 +13,7 @@ namespace JobClient.model
         public String executorParams { get; set; }
         public String executorBlockStrategy { get; set; }
         public int logId { get; set; }
-        public long logDateTim { get; set; }
+        public long logDateTime { get; set; }
         public String glueType { get; set; }
         public String glueSource { get; set; }
         public long glueUpdatetime { get; set; }
@@ -28,7 +28,7 @@ namespace JobClient.model
                 ", executorParams='" + executorParams + '\'' +
                 ", executorBlockStrategy='" + executorBlockStrategy + '\'' +
                 ", logId=" + logId +
-                ", logDateTim=" + logDateTim +
+                ", logDateTime=" + logDateTime +
                 ", glueType='" + glueType + '\'' +
                 ", glueSource='" + glueSource + '\'' +
                 ", glueUpdatetime=" + glueUpdatetime +

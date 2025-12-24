@@ -35,7 +35,7 @@ namespace JobClient.utils
 
             RegistryParam registryParam = new RegistryParam
             {
-                registGroup = "EXECUTOR",
+                registryGroup = "EXECUTOR",
                 registryKey = executorappname,
                 registryValue = $"{executorip}:{executorPort}"
             };

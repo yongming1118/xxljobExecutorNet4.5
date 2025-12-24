@@ -52,6 +52,7 @@
     <Compile Include="executor\ServerDispose.cs" />
     <Compile Include="glue\ExecutorBlockStrategyEnum.cs" />
     <Compile Include="model\HandleCallbackParam.cs" />
+    <Compile Include="model\LogParam.cs" />
     <Compile Include="rpc\Client\RegUtil.cs" />
     <Compile Include="Threads\ExecutorRegistryThread.cs" />
     <Compile Include="Threads\JobThread.cs" />

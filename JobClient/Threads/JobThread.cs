@@ -47,7 +47,7 @@ namespace JobClient.executor
 
             triggerLogIdSet.Add(triggerParam.logId);
             triggerQueue.Add(triggerParam);
-            return ReturnT<string>.SUCCESS;
+            return new ReturnT<String>(ReturnT<string>.SUCCESS_CODE, "任务受理成功");
         }
         internal void start()
         {
@@ -91,7 +91,7 @@ namespace JobClient.executor
                         try
                         {
                             // log filename: yyyy-MM-dd/9999.log
-                            String logFileName = XxlJobFileAppender.makeLogFileName(TimeUtil.ToTime(triggerParam.logDateTim), triggerParam.logId);
+                            String logFileName = XxlJobFileAppender.makeLogFileName(TimeUtil.ToTime(triggerParam.logDateTime), triggerParam.logId);
 
                             XxlJobFileAppender.contextHolder.Value = (logFileName);
                             ShardingUtil.setShardingVo(new ShardingUtil.ShardingVO(triggerParam.broadcastIndex, triggerParam.broadcastTotal));
@@ -124,13 +124,13 @@ namespace JobClient.executor
                         if (!toStop1)
                         {
                             // commonm
-                            TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.logId, executeResult));
+                            TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.logId, triggerParam.logDateTime, executeResult));
                         }
                         else
                         {
                             // is killed
                             ReturnT<String> stopResult = new ReturnT<String>(ReturnT<string>.FAIL_CODE, stopReason + " [业务运行中，被强制终止]");
-                            TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.logId, stopResult));
+                            TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.logId, triggerParam.logDateTime, stopResult));
                         }
                     }
                     else
@@ -162,7 +162,7 @@ namespace JobClient.executor
                 {
                     // is killed
                     ReturnT<String> stopResult = new ReturnT<String>(ReturnT<string>.FAIL_CODE, stopReason + " [任务尚未执行，在调度队列中被终止]");
-                    TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.logId, stopResult));
+                    TriggerCallbackThread.pushCallBack(new HandleCallbackParam(triggerParam.logId, triggerParam.logDateTime, stopResult));
                 }
             }
 

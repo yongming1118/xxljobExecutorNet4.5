@@ -30,43 +30,44 @@ namespace JobClient.executor
             using (StreamReader reader = new StreamReader(request.InputStream))
             {
                 text = reader.ReadToEnd();
-
-                //Console.WriteLine(text);
             }
 
-            var rpcrequest = Newtonsoft.Json.JsonConvert.DeserializeObject<RpcRequest>(text);
 
             ExecutorBizImpl executorBizImpl = new ExecutorBizImpl();
 
-            object invokeResult = null;
+            object invokeResult = null; 
 
-            switch (rpcrequest.methodName)
+            switch (request.RawUrl)
             {
-                case "run":
+                case "/run":
                     {
 
-                        invokeResult = executorBizImpl.run(Newtonsoft.Json.JsonConvert.DeserializeObject<TriggerParam>(rpcrequest.parameters[0].ToString()));
+                        var triggerParam = Newtonsoft.Json.JsonConvert.DeserializeObject<TriggerParam>(text);
+                        invokeResult = executorBizImpl.run(triggerParam);
                         break;
                     }
-                case "kill":
+                case "/kill":
                     {
-                        invokeResult = executorBizImpl.kill(int.Parse(rpcrequest.parameters[0].ToString()));
-
-                        break;
-                    }
-                case "log":
-                    {
-                        invokeResult = executorBizImpl.log(long.Parse(rpcrequest.parameters[0].ToString()), int.Parse(rpcrequest.parameters[1].ToString()), int.Parse(rpcrequest.parameters[2].ToString()));
+                        var triggerParam = Newtonsoft.Json.JsonConvert.DeserializeObject<TriggerParam>(text);
+                        invokeResult = executorBizImpl.kill(triggerParam.jobId);
 
                         break;
                     }
-                case "idleBeat":
+                case "/log":
                     {
-                        invokeResult = executorBizImpl.idleBeat(int.Parse(rpcrequest.parameters[0].ToString()));
+                        var LogParam = Newtonsoft.Json.JsonConvert.DeserializeObject<LogParam>(text);
+                        invokeResult = executorBizImpl.log(LogParam.logDateTim, LogParam.logId, LogParam.fromLineNum);
+
+                        break;
+                    }
+                case "/idleBeat":
+                    {
+                        var triggerParam = Newtonsoft.Json.JsonConvert.DeserializeObject<TriggerParam>(text);
+                        invokeResult = executorBizImpl.idleBeat(triggerParam.jobId);
                         break;
                     }
 
-                case "beat":
+                case "/beat":
                     {
                         invokeResult = executorBizImpl.beat();
                         break;
@@ -76,14 +77,7 @@ namespace JobClient.executor
                     break;
             }
 
-
-            RpcResponse rpcResponse = new RpcResponse
-            {
-                error = null,
-                result = invokeResult
-            };
-
-            ResponeHandler.ResponseHtml(obj.Response, Newtonsoft.Json.JsonConvert.SerializeObject(rpcResponse));
+            ResponeHandler.ResponseStr(obj.Response, Newtonsoft.Json.JsonConvert.SerializeObject(invokeResult), "application/json");
         }
     }
 }

@@ -19,21 +19,21 @@ namespace ConsoleApp1
 {
     class Program
     {
-
+         
         static void Main(string[] args)
         {
 
 
-
             XxlJobExecutor xxlJobExecutor = new XxlJobExecutor();
-            xxlJobExecutor.setLocalIp("127.0.0.1");
+            xxlJobExecutor.setLocalIp("http://192.168.16.37");
             xxlJobExecutor.setAppName("windows-job");
-            //xxlJobExecutor.setLogPath("");
-            xxlJobExecutor.setAdminAddresses("http://localhost:8080");
-            xxlJobExecutor.setPort(7071);
+            xxlJobExecutor.setAdminAddresses("http://192.168.18.29:8089/xxl-job-admin");
+            xxlJobExecutor.setPort(7072);
+            xxlJobExecutor.setAccessToken("");
             xxlJobExecutor.start();
 
-            Log4netManager.GetLogger("11111").Info("started");
+
+            //Log4netManager.GetLogger("11111").Info("started");
 
             Console.ReadKey();
         }

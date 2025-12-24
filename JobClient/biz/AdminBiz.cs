@@ -27,16 +27,16 @@ namespace JobClient.biz
 
         public ReturnT<String> callback(List<HandleCallbackParam> callbackParamList)
         {
-            //RpcRequest{serverAddress='http://127.0.0.1:8080/api', createMillisTime=1526018505399, accessToken='', className='com.xxl.job.core.biz.AdminBiz', methodName='callback', parameterTypes=[interface java.util.List], parameters=[[{logId=188593, executeResult={code=200, msg=null, content=null}}]]}
-            //RpcRequest{"serverAddress":"http://localhost:8080/api","createMillisTime":1526022306105,"accessToken":null,"className":"com.xxl.job.core.biz.AdminBiz","methodName":"callback","parameterTypes":["interface java.util.List"],"parameters":[[{"logId":188605,"executeResult":{"code":200,"msg":null,"content":null}}]]}
-            return PostPackage("callback", new[] { "java.util.List" }, new[] { callbackParamList });
+            var requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(callbackParamList);
+            return PostPackage("callback", requestStr);
         }
 
 
 
         public ReturnT<String> registry(RegistryParam registryParam)
         {
-            return PostPackage("registry", new[] { "com.xxl.job.core.biz.model.RegistryParam" }, new[] { registryParam });
+            var requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(registryParam);
+            return PostPackage("registry", requestStr);
         }
 
 
@@ -44,7 +44,8 @@ namespace JobClient.biz
 
         public ReturnT<String> registryRemove(RegistryParam registryParam)
         {
-            return PostPackage("registryRemove", new[] { "com.xxl.job.core.biz.model.RegistryParam" }, new[] { registryParam });
+            var requestStr = Newtonsoft.Json.JsonConvert.SerializeObject(registryParam);
+            return PostPackage("registryRemove", requestStr);
         }
 
 
@@ -81,6 +82,27 @@ namespace JobClient.biz
             }
         }
 
+        private ReturnT<String> PostPackage(string methodName, string requestStr)
+        {
+            var result = requestTo(address + MAPPING + "/" + methodName, requestStr);
+
+            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT<String>>(result);
+
+            if (response == null)
+            {
+                logger.Error(">>>>>>>>>>> xxl-rpc netty response not found.");
+                throw new Exception(">>>>>>>>>>> xxl-rpc netty response not found.");
+            }
+            if (response.code!= 200)
+            {
+                throw new Exception(response.msg);
+            }
+            else
+            {
+                return response;
+            }
+        }
+
         private string createPackage(string methodName, string[] parameterTypes, object[] parameters)
         {
             //RegistryParam registryParam = new RegistryParam
@@ -112,7 +134,7 @@ namespace JobClient.biz
 
             httpWebRequest.Timeout = 30 * 1000;// timeout;
             httpWebRequest.Method = "POST";
-            //    httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+            httpWebRequest.ContentType = "application/json";
 
             Stream myResponseStream = null;
             StreamReader myStreamReader = null;
