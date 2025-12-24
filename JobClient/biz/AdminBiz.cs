@@ -57,31 +57,6 @@ namespace JobClient.biz
 
         #region  Http Send Package functions 
 
-        private ReturnT<String> PostPackage(string methodName, string[] parameterTypes, object[] parameters)
-        {
-            var str = createPackage(methodName, parameterTypes, parameters);
-
-            var result = requestTo(address + MAPPING, str, this.accessToken);
-
-            var response = Newtonsoft.Json.JsonConvert.DeserializeObject<RpcResponse>(result);
-
-            if (response == null)
-            {
-                logger.Error(">>>>>>>>>>> xxl-rpc netty response not found.");
-                throw new Exception(">>>>>>>>>>> xxl-rpc netty response not found.");
-            }
-            if (response.isError())
-            {
-                throw new Exception(response.error);
-            }
-            else
-            {
-                var r1 = Newtonsoft.Json.JsonConvert.DeserializeObject<ReturnT<String>>(response.result.ToString());
-
-                return r1;
-            }
-        }
-
         private ReturnT<String> PostPackage(string methodName, string requestStr)
         {
             var result = requestTo(address + MAPPING + "/" + methodName, requestStr, this.accessToken);
@@ -101,31 +76,6 @@ namespace JobClient.biz
             {
                 return response;
             }
-        }
-
-        private string createPackage(string methodName, string[] parameterTypes, object[] parameters)
-        {
-            //RegistryParam registryParam = new RegistryParam
-            //{
-            //    registGroup = "EXECUTOR",
-            //    registryKey = executorappname,
-            //    registryValue = $"{executorip}:{executorPort}"
-            //};
-
-            RpcRequest rpcRequest = new RpcRequest
-            {
-                accessToken = accessToken,
-                className = "com.xxl.job.core.biz.AdminBiz",
-                createMillisTime = TimeUtil.CurrentTimeMillis(),
-                methodName = methodName,// "registry",
-                parameters = parameters,
-                parameterTypes = parameterTypes,
-                serverAddress = this.address + MAPPING,
-            };
-
-            var str = Newtonsoft.Json.JsonConvert.SerializeObject(rpcRequest);
-
-            return str;
         }
 
         private static string requestTo(string url, string requestStr, string strToken)
