@@ -7,8 +7,7 @@ C#客户端支持，
 
 
 
-配合修改后的 Server  https://github.com/zbw911/xxl-job-learn
-
+配合修改后的 Server  xxljob2.2.0
 
 本项目改写自XX-job的Java client。 向原作者致敬(https://github.com/xuxueli/xxl-job)
 
